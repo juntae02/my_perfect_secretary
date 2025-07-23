@@ -1,4 +1,11 @@
 # 주조 과정
+"""
+    1. move to furnace position & collecting ladle
+    2. move a ladle into a mould position
+    3. melt homogenization & pouring melt
+    4. returning ladle
+"""
+
 import rclpy
 import time
 from copy import deepcopy
