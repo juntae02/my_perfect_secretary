@@ -1,4 +1,26 @@
 # tcp 톻신
+"""
+    휴대폰을 통해 수신한 message 실행
+    [main]
+    ├── do_all                 # 전체 자동 실행 (casting → grinding → spinning → forging → QC)
+    ├── fd                     # 주조 모드 진입
+    │   ├── casting:X          # X회 반복 (예: casting:3)
+    │   └── exit               # 메인 상태로 복귀
+    ├── fg                     # 단조 모드 진입
+    │   ├── all                # 단조 전체 실행 (forging -> grinding -> spinning)
+    │   ├── hd                 # 잡기 (Holding)
+    │   ├── hm[:X]             # 해머질 (Hammering), 선택적으로 반복 횟수 입력
+    │   ├── vg                 # 수직 그라인딩 (Vertical Grinding)
+    │   ├── hg[:X]             # 수평 그라인딩 (Horizontal Grinding), 반복 횟수 입력 가능
+    │   ├── tw[:X]             # 비틀기 (Tweaking), 반복 횟수 입력 가능
+    │   └── exit               # 메인 상태로 복귀
+    ├── qc                     # 품질검사 모드 진입
+    │   ├── auto               # 자동 분류 시작 (무게 측정 포함)
+    │   ├── wc                 # 무게 측정만 수행
+    │   └── exit               # 메인 상태로 복귀
+    └── exit                   # 클라이언트 연결 종료  
+"""
+
 import socket
 import threading
 import subprocess
