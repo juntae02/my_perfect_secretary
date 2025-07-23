@@ -1,4 +1,12 @@
 # 단조 과정
+"""
+    1. Holding motion
+    2. Hammering motion
+    3. Grinding Vertical motion
+    4. Grinding Horizontal motion
+    5. Tweak motion
+"""
+
 import rclpy
 import time
 from copy import deepcopy
