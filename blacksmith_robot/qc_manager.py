@@ -1,4 +1,9 @@
 # 무게 측정
+"""
+    1. 무게(g)를 여러 번 측정해 평균 구함
+    2. 사전에 정의된 무게와 비교해, 폐기하거나 보관
+"""
+
 import rclpy
 import json
 import csv
