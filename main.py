@@ -17,21 +17,10 @@ print문은 자동으로 휴대폰 tcp 연결된 곳으로 전송되며, 한글 
 '''
 
 from tcp.tcp_server import TCPServer
-# from task.casting import Casting
-# from task.forging import GrindingTask, SpitRotationTask, Forge
-# from task.qc_manager import QCManager
-# from task.stop_motion import Movej_stop
 
 def main():
     # 서버 실행
     server = TCPServer(host='0.0.0.0', port=1234)
-    # server.ct = Casting()
-    # server.gt = GrindingTask()
-    # server.sp = SpitRotationTask()
-    # server.fg = Forge()
-    # server.qc = QCManager()
-    # server.mj = Movej_stop()
-
     server.start()
 
 if __name__ == "__main__":
