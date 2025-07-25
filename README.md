@@ -21,3 +21,7 @@
 >> - 회전값만 조절한 두 번의 ***movel*** 명령으로, 용탕 주입 기능  
 >> - [프로젝트 상세 설명](https://github.com/juntae02/my_perfect_secretary)  
 <br />
+
+- 발표 자료  
+> 언어는 영어로 설정해야 폰트가 변형되지 않음  
+>> - [🦾 나의 완벽한 비서](https://www.canva.com/design/DAGt2pGk8OM/XAmI-RrP8dZGNZCpIRM1vw/edit?utm_content=DAGt2pGk8OM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
