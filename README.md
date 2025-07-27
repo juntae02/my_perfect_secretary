@@ -29,7 +29,10 @@
 ## 📚 참고 및 출처
 - 본 프로젝트의 일부 코드는 아래 공개 저장소에서 **수정 없이 그대로 사용**되었습니다:  
   > 🔗 https://github.com/ROKEY-SPARK/DoosanBootcamInt1
-- 해당 저장소의 코드 중 `DSR_ROBOT2.py`, `DR_init.py` 등 일부 파일은, **로봇 제어 및 시스템 구성에 필요한 기능을 위해 포함하여 사용**되었습니다.
+
+- 해당 저장소의 코드 중 `DSR_ROBOT2.py`, `DR_init.py` 등 일부 파일은  
+  **로봇 제어 및 시스템 구성에 필요한 기능을 위해 포함하여 사용**되었습니다.
+  
 - 이 외에도 `DoosanBootcamInt1` 저장소 내의 일부 파일이 **직접 또는 간접적으로 참조되어 사용되었을 수 있습니다**.
 
 - 원본 저장소에는 [LICENSE](https://github.com/ROKEY-SPARK/DoosanBootcamInt1/blob/main/LICENSE)가 포함되어 있으며,  본 프로젝트 역시 해당 라이선스를 준수하여 사용하고 있습니다.
