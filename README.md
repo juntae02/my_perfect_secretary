@@ -32,7 +32,7 @@
 - **개발 언어**: Python 
 - **백엔드**: rclpy
 - **통신**: TCP CLIENT APP
-- **협업 툴**: GitHub, Notion, Draw.io
+- **협업 툴**: Notion, Draw.io
 <br />
 
 ## 👨‍💻 담당한 기능
