@@ -46,7 +46,7 @@
   
 - **래들 감지를 위한, Compliance Control 및 Force Control 적용** :  
   > &nbsp;&nbsp;로봇암이 용탕을 담는 레들을 정확히 감지하고 위치를 정렬할 수 있도록, 순응 제어 및 힘 제어 기법을 적용했습니다.  
-  > 힘 센서를 통해 
+  > 힘 센서를 통해   
   👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
 
 - **용탕 이송 중 넘치지 않기 위한 movesx 기능** :  
