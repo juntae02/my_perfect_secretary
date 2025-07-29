@@ -46,25 +46,22 @@
   👉 [충돌 방지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
   
 - **래들 감지를 위한, Compliance Control 및 Force Control 적용** :  
-  > &nbsp;&nbsp;로봇암이 용탕을 담는 레들의 위치를 정밀하게 파악할 수 있도록 task_compliance_ctrl() 및 set_desired_force()를 적용했습니다. 로봇이 Y축 방향으로 부드럽게 접근하면서, check_force_condition()을 통해 외력 변화로 레들의 존재를 감지합니다. 또한, get_current_posx()[0]를 감지된 좌표를 받아, 해당 위치를 바탕으로 레들을 수거합니다.
+  > &nbsp;&nbsp;용탕을 담는 레들의 위치를 정밀하게 파악할 수 있도록 **task_compliance_ctrl() 및 set_desired_force()를** 적용했습니다. 로봇이 Y축 방향으로 부드럽게 접근하면서, **check_force_condition()을** 통해 외력 변화로 레들의 존재를 감지합니다. 또한, **get_current_posx()[0]를** 통해서 감지된 좌표를 받고, 해당 위치를 바탕으로 레들을 수거하는 작업을 수행합니다.
 
   👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
 
 - **안정적인 용탕 이송을 위한, movesx 기능** :  
-  > &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
-  > 해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+  > &nbsp;&nbsp;용탕 이송은 넘치는 현상을 방지하기 위해, Joint각도 움직이는 movej는 지양했습니다. 또한, 용탕의 온도 변화는 민감한 부분이기에, 직선으로 움직이는 movel이 아닌 movesx를 사용하여 곡선으로 이동했습니다. 이때, z축이 움직이는 경우 용탕이 넘칠 수 있기 때문에, z축은 고정하여 이송하도록 구현했습니다.
 
   👉 [용탕 이송 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
   
 - **용탕 균일화를 위한, move_periodic 기능** :  
-  > &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
-  > 해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+  > &nbsp;&nbsp;용탕 내 온도 분포 및 불순물 침전을 방지하기 위해, move_periodic() 함수를 사용하여, 주기적 진동 기반 교반 동작을 구현했습니다. 진폭과 주기를 X-Y축에 각각 적용하여, 레들 내부의 용탕을 일정 패턴으로 흔들며 열 균일화 및 품질 안정화를 유도합니다. 이때, z축으로 같이 회전을 하면 용탕이 넘칠 가능성이 높아져 z축으로는 적용하지 않았습니다. 이는 주입 전 품질 제어 측면에서 제품 일관성과 신뢰성 확보에 기여합니다.
 
   👉 [용탕 균일화 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L171-L182)
 
-- ***안정적인 용탕 주입을 위한, movel 명령 시퀀스 기능*** :  
-  > &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
-  > 해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+- **안정적인 용탕 주입을 위한, movel 명령 시퀀스 기능** :  
+  > &nbsp;&nbsp;용탕 주입은 튐 현상을 방지하기 위해, 두 단계의 movel() 직선 궤적으로 작업을 수행합니다. 실제로 물을 따를 때를 모티브하여, 먼저 천천히 로봇의 회전 각도를 변경하여 용탕의 흐름을 유도합니다. 이후에 보다 깊은 각도로 주입을 완료하여, 잔여 용탕까지 모두 투입하도록 구현했습니다. 이는 고온 액체를 다루는 정밀 주조 환경에서 안정성을 극대화하는 전략적 제어 방식입니다.
 
   👉 [용탕 주입 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
 <br />
