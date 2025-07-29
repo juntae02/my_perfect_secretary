@@ -54,7 +54,7 @@
 
 - **안정적인 용탕 이송을 위한, movesx 기능** :  
   > &nbsp;&nbsp;용탕 이송은 넘치는 현상을 방지하기 위해, Joint각도 움직이는 movej는 지양했습니다.  
-  > 또한, 용탕의 온도 변화는 민감한 부분이기에, 직선으로 움직이는 movel이 아닌 movesx를 사용하여 곡선으로 이동했습니다.
+  > 또한, 용탕의 온도 변화는 민감한 부분이기에, 직선으로 움직이는 movel이 아닌 movesx를 사용하여 곡선으로 이동했습니다.  
   > 이때, z축이 움직이는 경우 용탕이 넘칠 수 있기 때문에, z축은 고정하여 이송하도록 구현했습니다.  
 
   👉 [용탕 이송 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
