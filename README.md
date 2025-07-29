@@ -42,28 +42,32 @@
   > &nbsp;&nbsp;비동기 movej 이동 중, **힘 센서를 통해 로봇암에 가해지는 외력**을 실시간으로 감지하고, **임계값을 초과할 경우에 즉시 정지**하도록 하는 안전 로직을 구현했습니다. 
   > 외력이 감지되면, 로봇은 일시적으로 **XYZ방향(위치 유연 & 자세 고정)의 순응 제어를 활성화**하여 충돌을 흡수하고, 작업자나 주변 물체에 가해지는 물리적 부담을 완화합니다.
   > 이후, **힘이 임계값 이하로 떨어지면 순응 제어를 해제**하고, 이전 목표 지점으로 **이동을 재시도**하여 작업을 이어가도록 구성했습니다.  
+
   👉 [충돌 방지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
   
 - **래들 감지를 위한, Compliance Control 및 Force Control 적용** :  
   > &nbsp;&nbsp;로봇암이 용탕을 담는 레들을 정확히 감지하고 위치를 정렬할 수 있도록, 순응 제어 및 힘 제어 기법을 적용했습니다.  
   > 힘 센서를 통해   
+
   👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
 
 - **용탕 이송 중 넘치지 않기 위한 movesx 기능** :  
-  &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
-  해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+  > &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
+  > 해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+
   👉 [용탕 이송 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
   
 - **용탕 균일화를 위한, move_periodic 기능** :  
-  &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
-  해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+  > &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
+  > 해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+
   👉 [용탕 균일화 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L171-L182)
 
 - ***안정적인 용탕 주입을 위한, movel 명령 시퀀스 기능*** :  
-  &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
-  해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
-  👉 [용탕 주입 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
+  > &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
+  > 해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
 
+  👉 [용탕 주입 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
 <br />
 
 ## 🤔 트러블슈팅 및 해결 과정 
