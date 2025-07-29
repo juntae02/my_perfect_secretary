@@ -39,32 +39,32 @@
 &nbsp;&nbsp;"충돌" 및 "용탕 튐"과 같은 **위험 요소를 방지**하는 방향으로, ***주조 공정 자동화*** 설계 
 
 - **amovej 이동 시 충돌 방지를 위한 정지 기능** :  
-  > &nbsp;&nbsp;비동기 movej 이동 중 **로봇암에 가해지는 외력**을 힘 센서로 실시간 감지하고, 설정된 임계값을 초과할 경우 **즉시 정지**하는 안전 로직을 구현했습니다.  
-  > 충돌이 감지되면 로봇은 **XYZ방향으로 위치 유연 및 자세 고정의 순응 제어**를 활성화하여 충격을 흡수하고, 작업자나 주변 환경에 가해지는 물리적 부담을 완화합니다.  
+  > &nbsp;&nbsp;비동기 movej 이동 중 **로봇암에 가해지는 외력**을 힘 센서로 실시간 감지하고, 설정된 임계값을 초과할 경우 **즉시 정지**하는 안전 로직을 구현했습니다. 
+  > 충돌이 감지되면 로봇은 **XYZ방향으로 위치 유연 및 자세 고정의 순응 제어**를 활성화하여 충격을 흡수하고, 작업자나 주변 환경에 가해지는 물리적 부담을 완화합니다. 
   > 이후 외력이 임계값 이하로 떨어지면 **순응 제어를 해제**하고, 이전 목표 지점으로 **재이동**하여 작업을 재개합니다.
 
   👉 [충돌 방지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
   
 - **래들 감지를 위한 Compliance Control 및 Force Control 적용** :  
-  > &nbsp;&nbsp;용탕을 담는 **래들**의 위치를 정밀하게 감지하기 위해 **task_compliance_ctrl() 및 set_desired_force()를** 적용하여, 로봇이 **Y축 방향**으로 부드럽게 접근하도록 설계했습니다.  
+  > &nbsp;&nbsp;용탕을 담는 **래들**의 위치를 정밀하게 감지하기 위해 **task_compliance_ctrl() 및 set_desired_force()를** 적용하여, 로봇이 **Y축 방향**으로 부드럽게 접근하도록 설계했습니다. 
   > **check_force_condition()을** 통해 외력 변화로 래들의 존재를 감지하고, **get_current_posx()[0]으로** 좌표를 획득하여 해당 위치를 기반으로 래들을 수거하는 동작을 수행합니다.
 
   👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
 
 - **안정적인 용탕 이송을 위한 movesx 기능** :  
-  > &nbsp;&nbsp;용탕 이송 중 **넘침**을 방지하기 위해 관절을 움직이는 **movej**는 사용하지 않았고, 직선 경로의 **movel** 대신 곡선 궤적의 **movesx**를 사용하여 보다 **부드럽고 신속하게** 이동하도록 구현했습니다.    
+  > &nbsp;&nbsp;용탕 이송 중 **넘침**을 방지하기 위해 관절을 움직이는 **movej**는 사용하지 않았고, 직선 경로의 **movel** 대신 곡선 궤적의 **movesx**를 사용하여 보다 **부드럽고 신속하게** 이동하도록 구현했습니다. 
   > 특히 **Z축의 진동**은 넘침 위험이 있으므로, **Z축은 고정**한 채 **X-Y축 중심으로** 이송을 수행하도록 제어했습니다.
 
   👉 [용탕 이송 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
   
 - **용탕 균일화를 위한 move_periodic 기능** :  
-  > &nbsp;&nbsp;용탕 속 불순물이 바닥에 가라앉는 **침전 현상**과 **내부 온도 불균형**을 방지하기 위해, **move_periodic()** 함수를 활용해 **주기적 진동 기반의 교반 동작**을 구현했습니다.  
+  > &nbsp;&nbsp;용탕 속 불순물이 바닥에 가라앉는 **침전 현상**과 **내부 온도 불균형**을 방지하기 위해, **move_periodic()** 함수를 활용해 **주기적 진동 기반의 교반 동작**을 구현했습니다. 
   > **X-Y축**에 진폭과 주기를 각각 적용하여 용탕을 일정 패턴으로 흔들며 **열 균일화**와 **품질 안정화**를 유도했고, 넘침 방지를 위해 **Z축 회전**은 적용하지 않았습니다.
 
   👉 [용탕 균일화 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L171-L182)
 
 - **안정적인 용탕 주입을 위한 movel 명령 시퀀스 기능** :  
-  > &nbsp;&nbsp;용탕 주입 시 튐 현상을 방지하기 위해, **두 단계의 movel() 직선 궤적 시퀀스**를 적용했습니다.  
+  > &nbsp;&nbsp;용탕 주입 시 튐 현상을 방지하기 위해, **두 단계의 movel() 직선 궤적 시퀀스**를 적용했습니다. 
   > 실제 물을 따르듯, 먼저 천천히 로봇의 회전 각도를 조절해 **용탕의 흐름을 유도**한 후, 깊은 각도로 주입을 완료하여 잔여 용탕까지 **모두 투입**되도록 구현했습니다.  
 
   👉 [용탕 주입 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
