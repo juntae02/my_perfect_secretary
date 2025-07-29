@@ -46,8 +46,7 @@
   👉 [충돌 방지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
   
 - **래들 감지를 위한, Compliance Control 및 Force Control 적용** :  
-  > &nbsp;&nbsp;로봇암이 용탕을 담는 레들을 정확히 감지하고 위치를 정렬할 수 있도록, 순응 제어 및 힘 제어 기법을 적용했습니다.  
-  > 힘 센서를 통해   
+  > &nbsp;&nbsp;로봇암이 용탕을 담는 레들의 위치를 정밀하게 파악할 수 있도록 task_compliance_ctrl() 및 set_desired_force()를 적용했습니다. 로봇이 Y축 방향으로 부드럽게 접근하면서, check_force_condition()을 통해 외력 변화로 레들의 존재를 감지합니다. 또한, get_current_posx()[0]를 감지된 좌표를 받아, 해당 위치를 바탕으로 레들을 수거합니다.
 
   👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
 
