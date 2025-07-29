@@ -28,7 +28,7 @@
 <br />
 
 ## 🛠️ 기술 스택
-- **로봇 하드웨어**: Doosan Robotics M-series M0609
+- **하드웨어**: Doosan Robotics M-series M0609
 - **개발 언어**: Python 
 - **백엔드**: rclpy
 - **통신**: TCP CLIENT APP
@@ -36,35 +36,26 @@
 <br />
 
 ## 👨‍💻 담당한 기능
-- ***YOLO 모델 생성 및 학습*** :  
-  &nbsp;&nbsp;프로젝트에 **최적화된 객체 탐지 모델을 구축하기 위해**, YOLO 모델을 생성 및 학습시켰습니다.  
-  이를 통해, 특정 꽃의 종류나 씨앗을 탐지하는 데 기여했습니다.  
-  👉 [모델 생성 및 학습 과정](https://github.com/juntae02/bloom_for_you/tree/main/yolo_models)
+&nbsp;&nbsp;충돌 및 용탕 튐과 같은 **위험 요소를 방지**하는 방향으로, ***주조 공정 자동화*** 설계 
+
+- **amovej 이동 시, 충돌 방지를 위한 정지 기능** :  
+  &nbsp;&nbsp;비동기 movej 이동 중, 힘 센서를 통해 힘 센서를 통해 로봇암에 가해지는 외력을 실시간으로 감지했습니다.
+  이때, 가해지는 힘이 일정 임계값을 초과할 경우 즉시 정지하도록 하는 안전 로직을 구현했습니다. 외력이 감지되면, 로봇은 일시적으로 XYZ방향(선형 이동 방향)의 순응제어를 활성화하여 충돌을 흡수하고, 작업자나 주변 물체에 가해지는 물리적 부담을 줄입니다. 이후, 힘이 임계값 밑으로 내려가면 순응 제어를 해제하고, 다시 동일한 목표 위치로 이동하도록 구현했습니다.
+ 
+  👉 [충돌 방지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
   
-- ***상황별 꽃 추천 기능*** :  
-  &nbsp;&nbsp;OpenAI API 기반 키워드 추출 함수(팀원)를 활용하여, 사용자의 **목적과 상황을 반영하는 프롬프트**를 설계했습니다.  
-  추출된 키워드를 **JSON 파일과 매칭**하여, 적절한 꽃 정보를 자동으로 불러오는 **추천** 로직을 구성했습니다.  
-  해당 꽃 정보는 **Kivy 기반의 GUI**에서 사용자가 결과를 확인하고, **"선택" 또는 "재선택"을** 요청할 수 있는 인터페이스를 구현했습니다.  
-  👉 [꽃 추천 기능(flower_recommender.py)](https://github.com/juntae02/bloom_for_you/blob/main/bloom_for_you/bloom_for_you/flower_recommender.py#L205-L250)  
-  👉 [GUI(Kivy) 기능(flower_recommender.py)](https://github.com/juntae02/bloom_for_you/blob/main/bloom_for_you/bloom_for_you/flower_recommender.py#L95-L203)  
-  👉 [프롬프트 파일](https://github.com/juntae02/bloom_for_you/blob/main/bloom_for_you/resource/prompt/recommender_prompt.txt)  
-  👉 [JSON 파일](https://github.com/juntae02/bloom_for_you/blob/main/bloom_for_you/resource/flower_recommendations.json)
+- **래들 감지를 위한, Compliance Control 및 Force Control 적용** :  
+  &nbsp;&nbsp;로봇암이 용탕을 담는 레들을 정확히 감지하고 위치를 정렬할 수 있도록, 순응 제어 및 힘 제어 기법을 적용했습니다.  
+힘 센서를 통해 
   
-- ***자동화된 씨앗 심기 기능*** :  
+- **용탕 균일화를 위한, move_periodic 기능** :  
   &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
   해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
-  **씨앗 미탐지 예외 처리** 및 **순응 제어 기반의 정밀 배치 기능** 로직도 구성하여, 안정적인 동작을 보장했습니다.  
-  👉 [씨앗 Pick&Place(seed_planting.py)](https://github.com/juntae02/bloom_for_you/blob/main/bloom_for_you/bloom_for_you/seed_planting.py#L76-L156)  
-  👉 [화분 Compliance Control(seed_planting.py)](https://github.com/juntae02/bloom_for_you/blob/main/bloom_for_you/bloom_for_you/seed_planting.py#L158-L184)
-<br />
 
-**[담당 역할]**
-> 충돌 및 용탕 튐과 같은 위험 요소를 방지하는 방향으로, 주조 공정을 구현
->> - ***movej***로 이동 시, 힘이 감지되면 정지 기능  
->> - ***compliance control*** 및 ***force control***를 사용하여, 레들 감지 기능  
->> - ***move_periodic***를 사용하여, 용탕 균일화 기능  
->> - 회전값만 조절한 두 번의 ***movel*** 명령으로, 용탕 주입 기능  
->> - [프로젝트 상세 설명](https://github.com/juntae02/my_perfect_secretary)  
+- ***안정적인 용탕 주입을 위한, movel 명령 시퀀스 기능*** :  
+  &nbsp;&nbsp;**ROS2 토픽 통신**을 통해 전달받을 꽃 정보를 해석하여, **로봇의 동작 흐름**을 설계했습니다.  
+  해당 꽃 정보를 바탕으로, YOLO를 통해 씨앗 및 화분의 위치를 탐지하고, **"씨앗 집기 -> 운반 -> 이식 -> 재배 구역 이동"** 로직을 구현했습니다.  
+
 <br />
 
 ## 🤔 트러블슈팅 및 해결 과정 
@@ -80,7 +71,7 @@
 - 배운 점:
 > - d:
 - 향후 계획:
-> - d:
+> - 긴급 정지 기능:
 <br />
 
 ## 🤝 팀원 정보
