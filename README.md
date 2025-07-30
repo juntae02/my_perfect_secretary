@@ -51,58 +51,48 @@
   - **원인** : **정확한 원인은 확인되지 않았지만**, 외력 감지 기반의 실시간 정지 기능이 필요하다고 판단했습니다.
   - **해결** : 외력이 임계값을 초과하면, **task_compliance_ctrl()** 명령어를 통해 **XYZ방향으로 위치 유연 및 자세 고정의 순응 제어**를 일시적으로 활성화하여, 
    **즉시 정지한 것처럼** 동작하도록 구현했습니다. 이후 외력이 해소되면 순응 제어를 해제하고, 기존 **목표 위치로 재이동**하여 작업을 재개합니다.  
-  👉 [충돌 방지 기능 보기](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
+  👉 [충돌 방지 코드](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
 
 - **문제 상황 2: 래들 위치가 매번 다르게 감지됨**
   - **상황** : 용탕을 담는 래들의 위치가 **환경 변화나 오차**로 인해, 매번 조금씩 달랐습니다.
   - **원인** : 위치를 **고정된 좌표**로 접근할 경우, 정확한 수거 실패 가능성이 높았습니다.
   - **해결** : **Compliance Control** 및 **Force Control** 기반으로 래들의 존재를 감지하고, 
     이후 **get_current_posx()[0]** 기반으로 좌표를 실시간 보정하고, 래들 수거 동작을 수행합니다.  
-  👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
+  👉 [래들 감지 코드](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
 
-- **문제 상황 3: 용탕 이송 중 넘침 현상**
-  - 원인: movej 또는 movel 사용 시 급격한 각도 변화로 넘침 발생
-  - 해결: Z축 고정 + 곡선 궤적 movesx 사용으로 부드럽고 안전하게 이송
-  👉 [용탕 이송 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
+- **문제 상황 3: 용탕 이송 중 넘침 현상 발생**
+  - **상황** : 용탕 대신 블럭을 담은 상태에서 로봇 이동 중, 블럭이 흔들리거나 낙하하는 문제가 발생했습니다. 
+  - **원인** : **movej** 사용 시 **급격한 관절 각도 변화**로 인해, 진동 또는 충격이 발생하면서 안정성이 저하되었습니다. 
+    또한, **movel** 사용 시 **Z축 이동 값**이 포함되면, Z축 진동이 발생하여 넘침 또는 낙하 위험이 커졌습니다.
+  - **해결** : **movej**의 급격한 관절 회전을 방지위해, **곡선 궤적 기반의 movesx** 명령어를 사용했습니다. 
+    또한, **Z축을 고정**한 채 X-Y축 중심으로 이동함으로써 수직 진동을 억제하고, **movel**보다 **부드럽고 신속한 이송**을 구현했습니다.  
+  👉 [용탕 이송 코드](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
 
 - **문제 상황 4: 용탕 내 온도 불균형 및 침전 발생**
+  - **상황** :
+  - **원인** :
+  - **해결** :
   - 해결: move_periodic()을 사용하여 일정 진폭의 XY축 교반을 주기적으로 수행
-  👉 [용탕 균일화 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L171-L182)
+  👉 [용탕 균일화 코드](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L171-L182)
 
-- **문제 상황 5: 주입 시 튐 현상**
-  - 해결: movel 시퀀스를 두 단계로 분리하여 흐름을 유도하고, 튐 없이 부드럽게 주입
-  👉 [용탕 주입 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
-
-
-
-  
-
-
-
-
-- **안정적인 용탕 이송을 위한 movesx 기능** :  
-  > &nbsp;&nbsp;용탕 이송 중 **넘침**을 방지하기 위해 관절을 움직이는 **movej**는 사용하지 않았고, 직선 경로의 **movel** 대신 곡선 궤적의 **movesx**를 사용하여 보다 **부드럽고 신속하게** 이동하도록 구현했습니다. 
-  > 특히 **Z축의 진동**은 넘침 위험이 있으므로, **Z축은 고정**한 채 **X-Y축 중심으로** 이송을 수행하도록 제어했습니다.
-
-
-  
-- **용탕 균일화를 위한 move_periodic 기능** :  
   > &nbsp;&nbsp;용탕 속 불순물이 바닥에 가라앉는 **침전 현상**과 **내부 온도 불균형**을 방지하기 위해, **move_periodic()** 함수를 활용해 **주기적 진동 기반의 교반 동작**을 구현했습니다. 
   > **X-Y축**에 진폭과 주기를 각각 적용하여 용탕을 일정 패턴으로 흔들며 **열 균일화**와 **품질 안정화**를 유도했고, 넘침 방지를 위해 **Z축 회전**은 적용하지 않았습니다.
 
+- **문제 상황 5: 주입 시 튐 현상**
+  - **상황** :
+  - **원인** :
+  - **해결** :
+  - 해결: movel 시퀀스를 두 단계로 분리하여 흐름을 유도하고, 튐 없이 부드럽게 주입
+  👉 [용탕 주입 코드](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
 
-
-- **안정적인 용탕 주입을 위한 movel 명령 시퀀스 기능** :  
   > &nbsp;&nbsp;용탕 주입 시 튐 현상을 방지하기 위해, **두 단계의 movel() 직선 궤적 시퀀스**를 적용했습니다. 
   > 실제 물을 따르듯, 먼저 천천히 로봇의 회전 각도를 조절해 **용탕의 흐름을 유도**한 후, 깊은 각도로 주입을 완료하여 잔여 용탕까지 **모두 투입**되도록 구현했습니다.  
 
 
 
-## 💡 과정 속에서 배운 점 및 향후 계획
+## 💡 과정 속에서 배운
 - 배운 점:
 > - d:
-- 향후 계획:
-> - 긴급 정지 기능:
 <br />
 
 ## 🤝 팀원 정보
