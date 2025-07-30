@@ -36,32 +36,40 @@
 <br />
 
 ## 👨‍💻 담당한 기능
-&nbsp;&nbsp;주조 공정 전체 자동화를 담당하여, 고온 액체를 다루는 위험한 환경에서도 **정밀성**, **안정성**, **작업자 보호**를 모두 고려한 협동로봇 제어 로직을 설계했습니다.
-- **충돌 방지 로직**: amovej 이동 중 외력을 실시간 감지하여, 순응 제어로 충돌 피해를 최소화
-- **래들 감지 및 위치 정렬**: Compliance Control 및 Force Control을 통해 래들의 존재를 감지하고, 자동 좌표 보정으로 수거 위치를 정밀 제어
-- **용탕 이송 안정화**: 넘침 방지를 위해 곡선 경로(movesx) 적용, Z축은 고정하고 X-Y축 중심으로 이동
-- **용탕 균일화(교반)**: move_periodic()을 사용한 주기적 진동으로, 내부 온도 분산 및 침전 방지
-- **안정적 용탕 주입 제어**: 두 단계의 movel로 흐름 유도 후 정밀 주입으로, 용탕 튐 방지
+&nbsp;&nbsp;주조 공정 전체 자동화를 담당하여, 고온 액체를 다루는 위험한 환경에서도 **정밀성**, **안정성**를 모두 고려한 협동로봇 제어 로직을 설계했습니다.
+- **충돌 방지 로직**: amovej 이동 중 외력을 실시간 감지하여, 순응 제어로 충돌 피해를 최소화했습니다.
+- **래들 감지 및 위치 정렬**: 순응 제어 및 힘 제어를 통해 래들을 감지하고, 자동 좌표 보정으로 수거 위치를 정밀 제어했습니다.
+- **용탕 이송 안정화**: 넘침 방지를 위해 곡선 경로(movesx) 적용, Z축은 고정하고 X-Y축 중심으로 이동했습니다.
+- **용탕 균일화(교반)**: move_periodic()을 사용한 주기적 진동으로, 내부 온도 분산 및 침전 방지했습니다.
+- **안정적 용탕 주입 제어**: 두 단계의 movel로 흐름 유도 후 정밀 주입으로, 용탕 튐 방지했습니다.
+<br />
 
-## 🤔 트러블슈팅 및 해결 과정 
+## 🤔 트러블슈팅 및 해결 
 
-- **문제 상황 1: stop() 명령어가 amovej 이동 중 실시간 정지에 실패함**
-  - 모션 명령어 중 stop() 명령어가 실행 타이밍상 충돌을 완전히 방지하지 못함
-  - 해결: 외력 초과 시, XYZ 위치 유연 & 자세 고정의 순응 제어를 일시 활성화하여 충돌 완화 후 자동 복귀
+- **문제 상황 1: amovej 이동 중, stop() 명령어가 작동하지 않음**
+  - Doosan API의 stop() 명령어가 **티치 펜던트 상에서는 정상 작동**했으나, **Python 기반 제어 코드에서는 작동하지 않았습니다**.
+  - **정확한 원인은 확인되지 않았지만**, 실시간 외력에 따른 긴급 정지가 필요하다고 판단했습니다.
+  - **해결** : 외력이 임계값을 초과하면, **task_compliance_ctrl()** 명령어를 통해 **XYZ방향으로 위치 유연 및 자세 고정의 순응 제어**를 일시 활성화하여
+    **로봇을 즉시 멈춘 것처럼** 동작하게 구현했습니다. 이후 외력이 해소되면 순응 제어를 해제하고, 기존 **목표 위치로 재이동**하여 작업을 재개합니다.
   👉 [충돌 방지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/stop_motion.py#L35-L68)
 
 - **문제 상황 2: 래들 위치가 매번 다르게 감지됨**
   - 해결: check_force_condition()을 활용한 Force 기반 감지 후, get_current_posx()[0] 좌표를 기반으로 위치 보정 수행
+  👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
 
 - **문제 상황 3: 용탕 이송 중 넘침 현상**
   - 원인: movej 또는 movel 사용 시 급격한 각도 변화로 넘침 발생
   - 해결: Z축 고정 + 곡선 궤적 movesx 사용으로 부드럽고 안전하게 이송
+  👉 [용탕 이송 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
 
 - **문제 상황 4: 용탕 내 온도 불균형 및 침전 발생**
   - 해결: move_periodic()을 사용하여 일정 진폭의 XY축 교반을 주기적으로 수행
+  👉 [용탕 균일화 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L171-L182)
 
 - **문제 상황 5: 주입 시 튐 현상**
   - 해결: movel 시퀀스를 두 단계로 분리하여 흐름을 유도하고, 튐 없이 부드럽게 주입
+  👉 [용탕 주입 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
+
 
 - **amovej 이동 시 충돌 방지를 위한 정지 기능** :  
   > &nbsp;&nbsp;비동기 movej 이동 중 **로봇암에 가해지는 외력**을 힘 센서로 실시간 감지하고, 설정된 임계값을 초과할 경우 **즉시 정지**하는 안전 로직을 구현했습니다. 
@@ -74,26 +82,26 @@
   > &nbsp;&nbsp;용탕을 담는 **래들**의 위치를 정밀하게 감지하기 위해 **task_compliance_ctrl() 및 set_desired_force()를** 적용하여, 로봇이 **Y축 방향**으로 부드럽게 접근하도록 설계했습니다. 
   > **check_force_condition()을** 통해 외력 변화로 래들의 존재를 감지하고, **get_current_posx()[0]으로** 좌표를 획득하여 해당 위치를 기반으로 래들을 수거하는 동작을 수행합니다.
 
-  👉 [래들 감지 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L115-L145)
+
 
 - **안정적인 용탕 이송을 위한 movesx 기능** :  
   > &nbsp;&nbsp;용탕 이송 중 **넘침**을 방지하기 위해 관절을 움직이는 **movej**는 사용하지 않았고, 직선 경로의 **movel** 대신 곡선 궤적의 **movesx**를 사용하여 보다 **부드럽고 신속하게** 이동하도록 구현했습니다. 
   > 특히 **Z축의 진동**은 넘침 위험이 있으므로, **Z축은 고정**한 채 **X-Y축 중심으로** 이송을 수행하도록 제어했습니다.
 
-  👉 [용탕 이송 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L147-L169)
+
   
 - **용탕 균일화를 위한 move_periodic 기능** :  
   > &nbsp;&nbsp;용탕 속 불순물이 바닥에 가라앉는 **침전 현상**과 **내부 온도 불균형**을 방지하기 위해, **move_periodic()** 함수를 활용해 **주기적 진동 기반의 교반 동작**을 구현했습니다. 
   > **X-Y축**에 진폭과 주기를 각각 적용하여 용탕을 일정 패턴으로 흔들며 **열 균일화**와 **품질 안정화**를 유도했고, 넘침 방지를 위해 **Z축 회전**은 적용하지 않았습니다.
 
-  👉 [용탕 균일화 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L171-L182)
+
 
 - **안정적인 용탕 주입을 위한 movel 명령 시퀀스 기능** :  
   > &nbsp;&nbsp;용탕 주입 시 튐 현상을 방지하기 위해, **두 단계의 movel() 직선 궤적 시퀀스**를 적용했습니다. 
   > 실제 물을 따르듯, 먼저 천천히 로봇의 회전 각도를 조절해 **용탕의 흐름을 유도**한 후, 깊은 각도로 주입을 완료하여 잔여 용탕까지 **모두 투입**되도록 구현했습니다.  
 
-  👉 [용탕 주입 기능](https://github.com/juntae02/my_perfect_secretary/blob/main/blacksmith_robot/casting.py#L184-L198)
-<br />
+
+
 
 ## 🤔 트러블슈팅 및 해결 과정 
 - 문제 상황: 충돌 감지 시 정지 기능 모션 명령어의 stop 모션이 적용되지 않음
