@@ -22,7 +22,7 @@
 ## 🎥 시연 영상
 - [🎞️ Demo (개인 시연 영상)](https://www.youtube.com/watch?v=wulUciU5lNg)  
 - [🎞️ Demo (전체 시연 영상)](https://www.youtube.com/watch?v=4p3I4KdZMHU)  
-👉 클릭해서 시연 영상 보기
+👉 클릭하시면 시연 영상을 시청하실 수 있습니다.
 - [🖥️ 발표 자료 (Canva)](https://www.canva.com/design/DAGt2pGk8OM/XAmI-RrP8dZGNZCpIRM1vw/edit?utm_content=DAGt2pGk8OM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)  
 ⚠️ Canva에서는 언어를 영어로 설정해야 폰트가 변형되지 않습니다.  
 <br />
